@@ -1,5 +1,6 @@
 // refer to student section 26 for JS logic
-var startButton = document.querySelector(".start-button");
+var startButtonEl = document.querySelector(".start-button");
+var displayedQuestionEl = document.querySelector(".displayed-question");
 var score = 0;
 var questionsArray = [
   "What is the bestagon?",
@@ -19,7 +20,7 @@ var question = {
 };
 
 // event listener for game start
-// create random question and answers document.createElement("'element_name'")
+// function to create random question and answers document.createElement("'element_name'")
 // store index of random question to get correct answers
 // event listener for answer selection
 // check if answer matches correct answer array
@@ -27,6 +28,9 @@ var question = {
 // end game after all questions, event listener to save high score
 //
 
-startButton.addEventListener("click", function (event) {
-  event.preventDefault;
+function renderQuestion() {}
+
+startButtonEl.addEventListener("click", function (event) {
+  console.log("start");
+  startButtonEl.disabled = true;
 });
