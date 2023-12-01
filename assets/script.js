@@ -67,6 +67,11 @@ answerChoices.addEventListener("click", function (event) {
   console.log("choice selected");
   console.log(event.target);
   if (event.target.textContent === correctAnswer) {
-    console.log("success");
+    console.log("Correct!");
+    score++;
+  } else {
+    console.log("Wrong!");
+    score--;
   }
+  console.log("current score: " + score);
 });
