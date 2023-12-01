@@ -1,6 +1,7 @@
 // refer to student section 26 for JS logic
 var startButtonEl = document.querySelector(".start-button");
 var displayedQuestionEl = document.querySelector(".displayed-question");
+var answerChoices = document.querySelector(".answer-choices");
 var score = 0;
 var questionsArray = [
   "What is the bestagon?",
@@ -28,9 +29,17 @@ var question = {
 // end game after all questions, event listener to save high score
 //
 
-function renderQuestion() {}
+function startQuiz() {}
+
+function endQuiz() {}
+
+function renderQuestion(questionObject, index) {
+  var renderedQuestion = questionsObject.questions[index];
+  //   var option = document.
+}
 
 startButtonEl.addEventListener("click", function (event) {
   console.log("start");
   startButtonEl.disabled = true;
+  startQuiz();
 });
