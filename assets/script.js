@@ -1,6 +1,7 @@
 var startButtonEl = document.querySelector(".start-button");
 var displayedQuestionEl = document.querySelector(".displayed-question");
 var answerChoices = document.querySelector(".answer-choices");
+var answerMatch = document.querySelector(".answer-match");
 var score = 0;
 var questionsArray = [
   "What is the Bestagon?",
@@ -14,32 +15,31 @@ var answersArray = [
 ];
 var correctArray = ["Hexagon", "Gravity", "Yes"];
 var question = {
-  questions: questionsArray,
-  answerChoices: answersArray,
-  answerCorrect: correctArray,
+  questions: Object.values(questionsArray),
+  answerChoices: Object.values(answersArray),
+  answerCorrect: Object.values(correctArray),
 };
 var correctAnswer;
 var usedIndexes = []; //use to ensure indexes are not repeated
 
 // event listener for game start-
 // function to create random question and answers document.createElement("'element_name'")-
-// store index of random question to get correct answers
-// event listener for answer selection
-// check if answer matches correct answer array
+// store index of random question to get correct answers-
+// event listener for answer selection-
+// check if answer matches correct answer array-
 // display correct/incorrect under next question and answers
 // end game after all questions, event listener to save high score
 //
 
 function startQuiz() {
   // start timer function call here
-  var randIndex = Math.floor(Math.random() * questionsArray.length);
-  console.log(randIndex);
+
+  var randIndex = Math.floor(Math.random() * question.questions.length);
+
   renderQuestion(question, randIndex);
 }
 
 function startTimer() {}
-
-function endQuiz() {}
 
 function renderQuestion(questionObject, index) {
   var renderedQuestion = questionObject.questions[index];
@@ -47,32 +47,44 @@ function renderQuestion(questionObject, index) {
   correctAnswer = questionObject.answerCorrect[index];
 
   displayedQuestionEl.textContent = renderedQuestion;
-  for (var i = 0; i < renderedAnswers.length; i++) {
-    var ans = document.createElement("button");
+  // create list elements for each answer choice
+  if (renderedAnswers) {
+    for (var i = 0; i < renderedAnswers.length; i++) {
+      var ans = document.createElement("button");
 
-    ans.textContent = renderedAnswers[i];
-    answerChoices.appendChild(ans);
+      ans.textContent = renderedAnswers[i];
+      answerChoices.appendChild(ans);
+    }
+
+    //splice out the used question and answers
+    questionObject.questions.splice(index, 1);
+    questionObject.answerChoices.splice(index, 1);
+    questionObject.answerCorrect.splice(index, 1);
   }
+}
 
-  //splice out the used question and answers
-  questionObject.questions.splice(index, 1);
-  questionObject.answerChoices.splice(index, 1);
-  questionObject.answerCorrect.splice(index, 1);
-  console.log(questionObject.questions);
+function endQuiz() {
+  displayedQuestionEl.textContent = "Your final score: " + score;
+  startButtonEl.disabled = false;
+  startButtonEl.textContent = "Play Again";
+
+  //reset object values to play again
+  question.questions = questionsArray;
+  question.answerChoices = answersArray;
+  question.answerCorrect = correctArray;
 }
 
 startButtonEl.addEventListener("click", function (event) {
-  console.log("start");
   startButtonEl.disabled = true;
   startQuiz();
 });
 
 answerChoices.addEventListener("click", function (event) {
   if (event.target.textContent === correctAnswer) {
-    console.log("Correct!");
+    answerMatch.textContent = "Correct!";
     score++;
   } else {
-    console.log("Wrong!");
+    answerMatch.textContent = "Wrong!";
     score--;
   }
   //clear answer buttons after making selection
@@ -81,5 +93,10 @@ answerChoices.addEventListener("click", function (event) {
   }
 
   console.log("current score: " + score);
-  startQuiz();
+
+  if (question.questions[0]) {
+    startQuiz();
+  } else {
+    endQuiz();
+  }
 });
