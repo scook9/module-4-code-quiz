@@ -1,8 +1,10 @@
 var startButtonEl = document.querySelector(".start-button");
+var timeEl = document.querySelector(".time");
 var displayedQuestionEl = document.querySelector(".displayed-question");
 var answerChoices = document.querySelector(".answer-choices");
 var answerMatch = document.querySelector(".answer-match");
 var score = 0;
+var secondsLeft = 5;
 var questionsArray = [
   "What is the Bestagon?",
   "Why do apples fall from trees?",
@@ -27,8 +29,8 @@ var usedIndexes = []; //use to ensure indexes are not repeated
 // store index of random question to get correct answers-
 // event listener for answer selection-
 // check if answer matches correct answer array-
-// display correct/incorrect under next question and answers
-// end game after all questions, event listener to save high score
+// display correct/incorrect under next question and answers-
+// end game after all questions or timer, event listener to save high score
 //
 
 function startQuiz() {
@@ -39,7 +41,20 @@ function startQuiz() {
   renderQuestion(question, randIndex);
 }
 
-function startTimer() {}
+function startTimer() {
+  // Sets interval in variable
+  var timerInterval = setInterval(function () {
+    secondsLeft--;
+    timeEl.textContent = "Time remaining: " + secondsLeft;
+
+    if (secondsLeft === 0) {
+      // Stops execution of action at set interval
+      clearInterval(timerInterval);
+      // Calls function to end quiz
+      endQuiz();
+    }
+  }, 1000);
+}
 
 function renderQuestion(questionObject, index) {
   var renderedQuestion = questionObject.questions[index];
@@ -76,6 +91,8 @@ function endQuiz() {
 
 startButtonEl.addEventListener("click", function (event) {
   startButtonEl.disabled = true;
+  timeEl.textContent = "Time remaining: " + secondsLeft;
+  startTimer();
   startQuiz();
 });
 
@@ -91,8 +108,6 @@ answerChoices.addEventListener("click", function (event) {
   while (answerChoices.firstChild) {
     answerChoices.removeChild(answerChoices.firstChild);
   }
-
-  console.log("current score: " + score);
 
   if (question.questions[0]) {
     startQuiz();
