@@ -1,4 +1,3 @@
-// refer to student section 26 for JS logic
 var startButtonEl = document.querySelector(".start-button");
 var displayedQuestionEl = document.querySelector(".displayed-question");
 var answerChoices = document.querySelector(".answer-choices");
@@ -20,9 +19,10 @@ var question = {
   answerCorrect: correctArray,
 };
 var correctAnswer;
+var usedIndexes = []; //use to ensure indexes are not repeated
 
 // event listener for game start-
-// function to create random question and answers document.createElement("'element_name'")
+// function to create random question and answers document.createElement("'element_name'")-
 // store index of random question to get correct answers
 // event listener for answer selection
 // check if answer matches correct answer array
@@ -54,7 +54,11 @@ function renderQuestion(questionObject, index) {
     answerChoices.appendChild(ans);
   }
 
-  console.log(renderedQuestion, renderedAnswers, correctAnswer);
+  //splice out the used question and answers
+  questionObject.questions.splice(index, 1);
+  questionObject.answerChoices.splice(index, 1);
+  questionObject.answerCorrect.splice(index, 1);
+  console.log(questionObject.questions);
 }
 
 startButtonEl.addEventListener("click", function (event) {
@@ -64,8 +68,6 @@ startButtonEl.addEventListener("click", function (event) {
 });
 
 answerChoices.addEventListener("click", function (event) {
-  console.log("choice selected");
-  console.log(event.target);
   if (event.target.textContent === correctAnswer) {
     console.log("Correct!");
     score++;
@@ -73,5 +75,11 @@ answerChoices.addEventListener("click", function (event) {
     console.log("Wrong!");
     score--;
   }
+  //clear answer buttons after making selection
+  while (answerChoices.firstChild) {
+    answerChoices.removeChild(answerChoices.firstChild);
+  }
+
   console.log("current score: " + score);
+  startQuiz();
 });
