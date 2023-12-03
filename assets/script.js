@@ -3,7 +3,9 @@ var timeEl = document.querySelector(".time");
 var displayedQuestionEl = document.querySelector(".displayed-question");
 var answerChoices = document.querySelector(".answer-choices");
 var answerMatch = document.querySelector(".answer-match");
+var submitScoreForm = document.querySelector(".high-score-submit");
 var submitScoreEl = document.querySelector(".submit-score");
+var highScoreButton = document.querySelector(".high-scores");
 var score = 0;
 var secondsLeft = 20;
 var questionsArray = [
@@ -24,6 +26,8 @@ var question = {
 };
 var correctAnswer;
 var usedIndexes = []; //use to ensure indexes are not repeated
+
+submitScoreForm.style.display = "none";
 
 // event listener for game start-
 // function to create random question and answers document.createElement("'element_name'")-
@@ -83,7 +87,7 @@ function endQuiz() {
   displayedQuestionEl.textContent = "Your final score: " + score;
   startButtonEl.disabled = false;
   startButtonEl.textContent = "Play Again";
-
+  submitScoreForm.style.display = "block";
   //reset object values to play again
   question.questions = questionsArray;
   question.answerChoices = answersArray;
@@ -91,6 +95,10 @@ function endQuiz() {
 }
 
 startButtonEl.addEventListener("click", function (event) {
+  //reload the page to play again instead of dealing with play again logic
+  if (startButtonEl.textContent === "Play Again") {
+    location.reload();
+  }
   startButtonEl.disabled = true;
   timeEl.textContent = "Time remaining: " + secondsLeft;
   secondsLeft = 20;
@@ -104,7 +112,6 @@ answerChoices.addEventListener("click", function (event) {
     score++;
   } else {
     answerMatch.textContent = "Wrong!";
-    score--;
   }
   //clear answer buttons after making selection
   while (answerChoices.firstChild) {
@@ -120,9 +127,15 @@ answerChoices.addEventListener("click", function (event) {
 
 submitScoreEl.addEventListener("click", function (event) {
   event.preventDefault();
-  console.log(document.querySelector(".initials"));
+  console.log(document.querySelector(".initials").value);
   localStorage.setItem(
-    document.querySelector(".initials").textContent,
+    document.querySelector(".initials").value,
     JSON.stringify(score)
   );
+});
+
+highScoreButton.addEventListener("click", function (event) {
+  event.preventDefault();
+  var scores = { ...localStorage };
+  console.log(scores);
 });
