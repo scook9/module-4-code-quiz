@@ -27,18 +27,8 @@ var question = {
   answerCorrect: Object.values(correctArray),
 };
 var correctAnswer;
-var usedIndexes = []; //use to ensure indexes are not repeated
 
 submitScoreForm.style.display = "none";
-
-// event listener for game start-
-// function to create random question and answers document.createElement("'element_name'")-
-// store index of random question to get correct answers-
-// event listener for answer selection-
-// check if answer matches correct answer array-
-// display correct/incorrect under next question and answers-
-// end game after all questions or timer, event listener to save high score
-// make play again refresh the page to simplify that process
 
 function startQuiz() {
   // start timer function call here
@@ -69,6 +59,7 @@ function renderQuestion(questionObject, index) {
   correctAnswer = questionObject.answerCorrect[index];
 
   displayedQuestionEl.textContent = renderedQuestion;
+
   // create list elements for each answer choice
   if (renderedAnswers) {
     for (var i = 0; i < renderedAnswers.length; i++) {
@@ -91,6 +82,7 @@ function endQuiz() {
   startButtonEl.disabled = false;
   startButtonEl.textContent = "Play Again";
   submitScoreForm.style.display = "block";
+
   //reset object values to play again
   question.questions = questionsArray;
   question.answerChoices = answersArray;
@@ -102,9 +94,11 @@ startButtonEl.addEventListener("click", function (event) {
   if (startButtonEl.textContent === "Play Again") {
     location.reload();
   }
+
   startButtonEl.disabled = true;
   timeEl.textContent = "Time remaining: " + secondsLeft;
   secondsLeft = 45;
+
   startTimer();
   startQuiz();
 });
@@ -117,6 +111,7 @@ answerChoices.addEventListener("click", function (event) {
     answerMatch.textContent = "Wrong!";
     secondsLeft -= 5;
   }
+
   //clear answer buttons after making selection
   while (answerChoices.firstChild) {
     answerChoices.removeChild(answerChoices.firstChild);
@@ -145,9 +140,6 @@ highScoreButton.addEventListener("click", function (event) {
   }
   var highScore;
   scores = { ...localStorage };
-  console.log(scores);
-  console.log(Object.entries(scores));
-  console.log(Object.entries(scores)[0][0]);
 
   //display high scores from local storage
   for (var i = 0; i < Object.entries(scores).length; i++) {
