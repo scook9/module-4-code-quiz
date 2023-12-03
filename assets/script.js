@@ -6,8 +6,10 @@ var answerMatch = document.querySelector(".answer-match");
 var submitScoreForm = document.querySelector(".high-score-submit");
 var submitScoreEl = document.querySelector(".submit-score");
 var highScoreButton = document.querySelector(".high-scores");
+var highScoreList = document.querySelector(".high-score-list");
 var score = 0;
-var secondsLeft = 20;
+var scores; //create object of all initials and scores when viewing high scores
+var secondsLeft = 45;
 var questionsArray = [
   "What is the Bestagon?",
   "Why do apples fall from trees?",
@@ -84,6 +86,7 @@ function renderQuestion(questionObject, index) {
 }
 
 function endQuiz() {
+  timeEl.style.display = "none";
   displayedQuestionEl.textContent = "Your final score: " + score;
   startButtonEl.disabled = false;
   startButtonEl.textContent = "Play Again";
@@ -101,7 +104,7 @@ startButtonEl.addEventListener("click", function (event) {
   }
   startButtonEl.disabled = true;
   timeEl.textContent = "Time remaining: " + secondsLeft;
-  secondsLeft = 20;
+  secondsLeft = 45;
   startTimer();
   startQuiz();
 });
@@ -112,6 +115,7 @@ answerChoices.addEventListener("click", function (event) {
     score++;
   } else {
     answerMatch.textContent = "Wrong!";
+    secondsLeft -= 5;
   }
   //clear answer buttons after making selection
   while (answerChoices.firstChild) {
@@ -127,7 +131,7 @@ answerChoices.addEventListener("click", function (event) {
 
 submitScoreEl.addEventListener("click", function (event) {
   event.preventDefault();
-  console.log(document.querySelector(".initials").value);
+  submitScoreEl.disabled = true;
   localStorage.setItem(
     document.querySelector(".initials").value,
     JSON.stringify(score)
@@ -136,6 +140,21 @@ submitScoreEl.addEventListener("click", function (event) {
 
 highScoreButton.addEventListener("click", function (event) {
   event.preventDefault();
-  var scores = { ...localStorage };
+  while (highScoreList.firstChild) {
+    highScoreList.removeChild(highScoreList.firstChild);
+  }
+  var highScore;
+  scores = { ...localStorage };
   console.log(scores);
+  console.log(Object.entries(scores));
+  console.log(Object.entries(scores)[0][0]);
+
+  //display high scores from local storage
+  for (var i = 0; i < Object.entries(scores).length; i++) {
+    console.log("test");
+    highScore = document.createElement("li");
+    highScore.textContent =
+      Object.entries(scores)[i][0] + ": " + Object.entries(scores)[i][1];
+    highScoreList.appendChild(highScore);
+  }
 });
