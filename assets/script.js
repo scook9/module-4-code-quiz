@@ -3,8 +3,9 @@ var timeEl = document.querySelector(".time");
 var displayedQuestionEl = document.querySelector(".displayed-question");
 var answerChoices = document.querySelector(".answer-choices");
 var answerMatch = document.querySelector(".answer-match");
+var submitScoreEl = document.querySelector(".submit-score");
 var score = 0;
-var secondsLeft = 5;
+var secondsLeft = 20;
 var questionsArray = [
   "What is the Bestagon?",
   "Why do apples fall from trees?",
@@ -31,7 +32,7 @@ var usedIndexes = []; //use to ensure indexes are not repeated
 // check if answer matches correct answer array-
 // display correct/incorrect under next question and answers-
 // end game after all questions or timer, event listener to save high score
-//
+// make play again refresh the page to simplify that process
 
 function startQuiz() {
   // start timer function call here
@@ -92,6 +93,7 @@ function endQuiz() {
 startButtonEl.addEventListener("click", function (event) {
   startButtonEl.disabled = true;
   timeEl.textContent = "Time remaining: " + secondsLeft;
+  secondsLeft = 20;
   startTimer();
   startQuiz();
 });
@@ -114,4 +116,13 @@ answerChoices.addEventListener("click", function (event) {
   } else {
     endQuiz();
   }
+});
+
+submitScoreEl.addEventListener("click", function (event) {
+  event.preventDefault();
+  console.log(document.querySelector(".initials"));
+  localStorage.setItem(
+    document.querySelector(".initials").textContent,
+    JSON.stringify(score)
+  );
 });
