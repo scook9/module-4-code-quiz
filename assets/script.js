@@ -64,6 +64,7 @@ function renderQuestion(questionObject, index) {
   if (renderedAnswers) {
     for (var i = 0; i < renderedAnswers.length; i++) {
       var ans = document.createElement("button");
+      ans.classList.add("button");
 
       ans.textContent = renderedAnswers[i];
       answerChoices.appendChild(ans);
