@@ -16,7 +16,7 @@ This webpage is a short quiz that will store the user's score in local memory an
 https://scook9.github.io/module-4-code-quiz  
 https://github.com/scook9/module-4-code-quiz
 
-![quiz in progress](assets/images/webpageCapture.png)
+![quiz in progress](assets/images/webpageCapture.PNG)
 
 ## Credits
 
